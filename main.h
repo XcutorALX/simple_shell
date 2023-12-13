@@ -1,26 +1,29 @@
-#include <stdlib.h>
-#include <stdio.h>
 #ifndef MAIN_H
 #define MAIN_H
+#include <stdlib.h>
+#include <stdio.h>
 
 extern char **environ;
 
-typedef struct Node {
+typedef struct Node
+{
 	char *data;
 	int *num;
 	void *ptr;
 	struct Node *next;
 } Node;
 
-typedef struct {
+typedef struct
+{
 	Node *head;
 	int size;
 } list_l;
 
-typedef struct {
+typedef struct
+{
 	char *cmd;
 	int (*func)(char **ptr);
-}builtins;
+} builtins;
 
 extern void **allocMem;
 extern int allocated;
