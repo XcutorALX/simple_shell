@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include "main.h"
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 /**
  * shellHelper - runs shell commands with fork and exceve
@@ -37,4 +40,75 @@ int shellHelper(char **argv, char **env)
 	}
 
 	return (0);
+}
+
+/**
+ * interactiveMode - runs the shell in interactive mode
+ *
+ * @av: an array of arguments as strings
+ *
+ * Return: always 0
+ */
+
+int interactiveMode(char **av, char *currentPath)
+{
+	size_t bufferSize = 1024;
+	struct stat st;
+	char *file = av[1];
+	char *lineptr = NULL;
+	char delim[] = " ";
+	char **command;
+	int fd;
+
+	char *fullPath = strcon(currentPath, file);
+	if (stat(fullPath, &st) == 0)
+	{
+		fd = open(fullPath, O_RDONLY);
+		while(getLine(&lineptr, &bufferSize, fd) != -1)
+		{
+			command = tokenize(lineptr, delim);
+			testBuiltin(command, av[0]);
+		}	
+	}
+	else
+		printf("%s: 1: %s: not found\n", av[0], file);
+
+	exit(0);
+}
+
+/**
+ * shellloop - the main shell loop
+ *
+ * @av: arguments
+ *
+ * Return: none
+ */
+
+int shellloop(char **av)
+{
+	char *lineptr = NULL;
+	size_t bufferSize = 1024;
+	char delim[] = " ";
+	char **command;
+	int terminal;
+
+	terminal = isatty(STDIN_FILENO);
+	if (terminal == 1)
+	{
+		printf("$ ");
+		fflush(stdout);
+	}
+	while (getLine(&lineptr, &bufferSize, STDIN_FILENO) != -1)
+	{
+		command = tokenize(lineptr, delim);
+		testBuiltin(command, av[0]);
+
+		if (terminal == 1)
+		{
+			printf("$ ");
+			fflush(stdout);
+		}
+	}
+	if (terminal == 1)
+		printf("\n");
 }

@@ -7,11 +7,12 @@
  *
  *@argv: the commnand line input
  *@av: the name of the file being run
+ *@interactive: 1 or 0 for interactive or non interactive mode
  *
  *Return: none
  */
 
-int testBuiltin(char **argv, char *av)
+int testBuiltin(char **argv, char *av, int interactive)
 {
 	struct stat st;
 	char *temp;
@@ -30,14 +31,14 @@ int testBuiltin(char **argv, char *av)
 		}
 	}
 	if (stat(argv[0], &st) == 0)
-		shellHelper(argv, environ);
+		shellHelper(argv, environ, interactive);
 	else
 	{
 		temp = searchFile(argv[0]);
 		if (temp != NULL)
 		{
 			argv[0] = temp;
-			shellHelper(argv, environ);
+			shellHelper(argv, environ, interactive);
 		}
 		else
 			printf("%s: 1: %s: not found\n", av, argv[0]);
@@ -54,20 +55,15 @@ int testBuiltin(char **argv, char *av)
 
 int myexit(char **argv)
 {
-	char *valueStr;
-	int value, len;
+	char *valueStr = argv[1];
+	int value;
 
-	if (argv[1] == NULL)
-	{
-		exit(0);
-	}
-	else
-	{
-		valueStr = argv[1];
-		value = _atoi(valueStr);
-		if (value == -1)
-			return (1);
-	}
+	if (valueStr == NULL)
+		exit (0);
+	value = _atoi(valueStr);
+	if (value == -1)
+		return (1);
+
 	exit(value);
 }
 

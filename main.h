@@ -48,7 +48,7 @@ extern void **allocMem;
 extern int allocated;
 extern int sizeAllocMem;
 
-int getLine(char **lineptr, size_t *bufferSize, FILE *stream);
+int getLine(char **lineptr, size_t *bufferSize, int fd);
 char **strTok(char *str, char *delim);
 char **tokenize(char *str, char *delim);
 int shellHelper(char **argv, char **env);
@@ -71,8 +71,11 @@ int memcpystr(char **ptr, char **newptr);
 char *searchFile(char *fileName);
 int printEnv(char **argv);
 int myexit(char **argv);
-int _atoi(char str[]);
+int _atoi(char *str);
 int _pow(long int x, long int y);
 int testBuiltin(char **argv, char *av);
+int interactiveMode(char **av, char *currentPath);
+int shellloop(char **av);
+int my_fgetc(int fd);
 
 #endif

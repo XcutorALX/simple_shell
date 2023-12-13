@@ -14,7 +14,7 @@
  * the number of characters read
  */
 
-int getLine(char **lineptr, size_t *bufferSize, FILE *stream)
+int getLine(char **lineptr, size_t *bufferSize, int fd)
 {
 	size_t i = 0;
 	int c;
@@ -30,7 +30,7 @@ int getLine(char **lineptr, size_t *bufferSize, FILE *stream)
 			exit(EXIT_FAILURE);
 		}
 	}
-	while ((c = fgetc(stream)) != EOF && c != '\n')
+	while ((c = my_fgetc(fd)) != EOF && c != '\n')
 	{
 		if (i == *bufferSize - 1)
 		{
@@ -54,5 +54,6 @@ int getLine(char **lineptr, size_t *bufferSize, FILE *stream)
 	*bufferSize = i;
 	*lineptr = realloc(*lineptr, *bufferSize * sizeof(char));
 	(*lineptr)[i] = '\0';
+
 	return (i);
 }
