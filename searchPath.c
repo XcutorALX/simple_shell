@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #define DELIM ":"
 /**
- * searchFile: this function searches for a file in the system PATH
+ * searchFile - this function searches for a file in the system PATH
  *
  * @fileName: the name of the file to search for
  *
@@ -22,15 +22,15 @@ char *searchFile(char *fileName)
 	struct stat st;
 
 	pathTokens = tokenize(path, DELIM);
-	
+
 	if (!pathTokens)
 	{
 		perror("Unable to get paths");
 		return (NULL);
 	}
 
-	for (fileLength = 0; fileName[fileLength] != '\0'; fileLength++);
-	
+	for (fileLength = 0; fileName[fileLength] != '\0'; fileLength++)
+		;
 	fullPath = (char *)malloc(1024);
 
 	for (index = 0; pathTokens[index]; index++)
@@ -40,18 +40,18 @@ char *searchFile(char *fileName)
 			fullPath[i] = pathTokens[index][i];
 		}
 		fullPath[i++] = '/';
-		for (size_t j = 0; fileName[j] != '\0'; j++,i++)
+		for (size_t j = 0; fileName[j] != '\0'; j++, i++)
 		{
 			fullPath[i] = fileName[j];
 		}
 		fullPath[i] = '\0';
-		
+
 		if (stat(fullPath, &st) == 0)
 		{
-			return fullPath;
+			return (fullPath);
 		}
 	}
 
 	free(fullPath);
-	return NULL;
+	return (NULL);
 }

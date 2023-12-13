@@ -4,9 +4,12 @@
 #include <sys/types.h>
 
 /**
- * main - simple shell that executes ls -l /tmp in 5 different child processes
+ * shellHelper - runs shell commands with fork and exceve
  *
- * return: always 0
+ *@argv: an array of arguments as strings
+ *@env: the currrent enviroment
+ *
+ *Return: always 0
  */
 
 int shellHelper(char **argv, char **env)
@@ -15,8 +18,6 @@ int shellHelper(char **argv, char **env)
 	pid_t child_pid;
 
 	child_pid = fork();
-
-	
 	if (child_pid == -1)
 	{
 		perror("At forking ERROR:");

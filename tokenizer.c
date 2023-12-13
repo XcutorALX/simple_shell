@@ -15,8 +15,8 @@
 
 char *_strtok(char *str, char *delim)
 {
-	static int position = 0;
-	static char *strPtr = NULL;
+	static int position;
+	static char *strPtr;
 	static int count;
 	size_t start;
 	int new;
@@ -26,7 +26,6 @@ char *_strtok(char *str, char *delim)
 		strPtr = str;
 		position = 0;
 		count = 0;
-
 		for (; strPtr[count] != '\0'; count++)
 		{
 			for (size_t i = 0; delim[i] != '\0'; i++)
@@ -40,20 +39,17 @@ char *_strtok(char *str, char *delim)
 		}
 		count++;
 	}
-
 	start = position;
 	if (position == count)
-		return NULL;
-
+		return (NULL);
 	for (; position <= count; position++)
 	{
-		
 		if (position)
 		{
 			if (strPtr[position - 1] != '\0' && strPtr[position] == '\0')
 			{
 				position++;
-				return &strPtr[start];
+				return (&strPtr[start]);
 			}
 			else if (strPtr[position - 1] == '\0' && strPtr[position] != '\0')
 				start = position;
@@ -63,13 +59,13 @@ char *_strtok(char *str, char *delim)
 
 
 /**
- * strTok: a function that splits a string into an array of string according to
- * a delim provided
+ * tokenize - a function that splits a string
+ * into an array of string according to a delim provided
  *
- * str: the string to be parsed
- * delim: the delimeter to look out for
+ *@str: the string to be parsed
+ *@delim: the delimeter to look out for
  *
- * return: returns an array of strings
+ *Return: returns an array of strings
  */
 
 char **tokenize(char *str, char *delim)
@@ -80,28 +76,23 @@ char **tokenize(char *str, char *delim)
 
 	size = 1024;
 	split = malloc(size * sizeof(char *));
-
 	if (!split)
 	{
 		perror("Memory reallocation error third");
 		exit(EXIT_FAILURE);
 	}
-
 	buffer = _strtok(str, delim);
 	split[0] = buffer;
-
 	if (!buffer)
 	{
 		return (NULL);
 	}
-
 	for (count = 1; (buffer = _strtok(NULL, delim)) != NULL; count++)
 	{
 		if (count == size - 1)
 		{
 			size *= 1.5;
 			split = realloc(split, size * sizeof(char *));
-
 			if (!split)
 			{
 				perror("Memory reallocation error second");
@@ -112,14 +103,11 @@ char **tokenize(char *str, char *delim)
 	}
 	split[count++] = NULL;
 	size = count + 1;
-
 	split = realloc(split, size * sizeof(char *));
-	
 	if (!split)
 	{
 		perror("Memory reallocation error third");
 		exit(EXIT_FAILURE);
 	}
-	
 	return (split);
-}	
+}

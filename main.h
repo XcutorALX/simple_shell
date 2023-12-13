@@ -17,6 +17,11 @@ typedef struct {
 	int size;
 } list_l;
 
+typedef struct {
+	char *cmd;
+	int (*func)(char **ptr);
+}builtins;
+
 extern void **allocMem;
 extern int allocated;
 extern int sizeAllocMem;
@@ -42,5 +47,10 @@ void *_realloc(void *ptr, int size, int newSize, int mode);
 int _memcpy(char *ptr, char *newPtr);
 int memcpystr(char **ptr, char **newptr);
 char *searchFile(char *fileName);
+int printEnv(char **argv);
+int myexit(char **argv);
+int _atoi(char str[]);
+int _pow(long int x, long int y);
+int testBuiltin(char **argv, char *av);
 
 #endif

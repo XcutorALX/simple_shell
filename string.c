@@ -23,7 +23,7 @@ char *_strdup(char *str)
 		{
 			size *= 1.5;
 			duplicate = realloc(duplicate, size * sizeof(char));
-			
+
 			if (!duplicate)
 			{
 				perror("Memory allocation error");
@@ -42,7 +42,7 @@ char *_strdup(char *str)
 		exit(EXIT_FAILURE);
 	}
 
-	return duplicate;
+	return (duplicate);
 }
 
 /**
@@ -51,16 +51,18 @@ char *_strdup(char *str)
  * @strOne: the first string
  * @strTwo: the second string
  *
- * return: a pointer to the concatenated string
+ * Return: a pointer to the concatenated string
  */
 
-char *strcon(const char *strOne,const char *strTwo)
+char *strcon(const char *strOne, const char *strTwo)
 {
 	char *strCon;
 	size_t first, second, index;
 
-	for (first = 0; strOne[first] != '\0'; first++);
-	for (second = 0; strTwo[second] != '\0'; second++);
+	for (first = 0; strOne[first] != '\0'; first++)
+		;
+	for (second = 0; strTwo[second] != '\0'; second++)
+		;
 
 	strCon = malloc((first + second + 1) * sizeof(char));
 
@@ -77,15 +79,14 @@ char *strcon(const char *strOne,const char *strTwo)
 		strCon[index] = strTwo[second];
 
 	strCon[index] = '\0';
-
-	return strCon;
+	return (strCon);
 }
 
 /**
  * _strcmp - compares two strings
  *
  * @strone: the first string
- * @strtwo: the second string 
+ * @strtwo: the second string
  *
  * Return: returs zero if the string are the same and one if they're different
  */
@@ -95,8 +96,8 @@ int _strcmp(const char *strone, const char *strtwo)
 	for (size_t i = 0; strone[i] != '\0' && strtwo[i] != '\0'; i++)
 	{
 		if (strone[i] != strtwo[i])
-			return 1;
+			return (1);
 	}
 
-	return 0;
+	return (0);
 }

@@ -5,13 +5,17 @@
  * addAddress - adds an address to the global array keeping track
  * of dynamically allocated memory
  *
- * @addr: the address to add to the array
+ * @ptr: the address to add to the array
  *
  * Return: returns 0
  */
 
 int addAddress(void *ptr)
 {
+	void **allocMem;
+	int allocated;
+	int sizeAllocMem;
+
 	if (allocated == sizeAllocMem - 1)
 	{
 		sizeAllocMem *= 1.5;
@@ -28,7 +32,7 @@ int addAddress(void *ptr)
 	allocated += 1;
 	allocMem[allocated] = NULL;
 
-	return 0;
+	return (0);
 }
 
 /**
@@ -39,15 +43,15 @@ int addAddress(void *ptr)
 
 int freeMem(void)
 {
+	void **allocMem;
 	size_t i;
 
 	for (i = 0; allocMem[i]; i++)
 	{
 		free(allocMem[i]);
 	}
-	
 	free(allocMem);
-	return 0;
+	return (0);
 }
 
 /**
@@ -66,18 +70,18 @@ void *_realloc(void *ptr, int size, int newSize, int mode)
 	void *newPtr;
 
 	if (!ptr)
-		return malloc(newSize);
+		return (malloc(newSize));
 	if (!newSize)
 	{
 		free(ptr);
-		return NULL;
+		return (NULL);
 	}
 	if (newSize == size)
-		return ptr;
+		return (ptr);
 
 	newPtr = malloc(newSize * mode);
 	if (!newPtr)
-		return NULL;
+		return (NULL);
 
 	if (mode == sizeof(char *))
 		memcpystr((char **)ptr, (char **)newPtr);
@@ -86,16 +90,14 @@ void *_realloc(void *ptr, int size, int newSize, int mode)
 		_memcpy(ptr, newPtr);
 
 	free(ptr);
-	return newPtr;
+	return (newPtr);
 }
 
 /**
  * _memcpy - copies data from one block into another
  *
  * @ptr: the block to copy from
- * @sizeone: size of first block
  * @newPtr: the block to copy to
- * @sizetwo: size of the second block
  *
  * Return: returns 0 on success and 1 on failure
  */
@@ -103,21 +105,20 @@ void *_realloc(void *ptr, int size, int newSize, int mode)
 int _memcpy(char *ptr, char *newPtr)
 {
 	size_t i;
+
 	for (i = 0; ptr[i] != '\0'; i++)
 		((char *)newPtr)[i] = ((char *)ptr)[i];
 
 	newPtr[i] = '\0';
-	return 0;
+	return (0);
 }
 
 
 /**
- * _memcpystr - copies strings from one array of strings to another
+ * memcpystr - copies strings from one array of strings to another
  *
  * @ptr: the block to copy from
- * @sizeone: the size of the first block
  * @newptr: the block to copy to
- * @sizetwo:the size of the second block
  *
  * Return: returns 0 on success and 1 on failure
  */
@@ -125,10 +126,11 @@ int _memcpy(char *ptr, char *newPtr)
 int memcpystr(char **ptr, char **newptr)
 {
 	size_t i;
+
 	for (i = 0; ptr[i] != NULL; i++)
 		((char **)newptr)[i] = ((char **)ptr)[i];
 
 	newptr[i] = NULL;
 
-	return 0;
+	return (0);
 }
