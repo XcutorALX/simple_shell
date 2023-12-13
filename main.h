@@ -5,21 +5,40 @@
 
 extern char **environ;
 
+/**
+ * struct Node - a node of a linked list
+ * @num: the number field
+ * @data: a string
+ * @next: points to the next node
+ */
+
 typedef struct Node
 {
 	char *data;
 	int *num;
-	void *ptr;
 	struct Node *next;
 } Node;
 
-typedef struct
+/**
+ * struct list_k - a linked list
+ * @head: the first node on the list
+ * @size: the size of the list
+ */
+
+typedef struct list_k
 {
 	Node *head;
 	int size;
 } list_l;
 
-typedef struct
+/**
+ * struct built - a structure with a cmd name
+ * and a function pointer
+ * @cmd: the command name
+ * @func: a pointer to the function of the name
+ */
+
+typedef struct built
 {
 	char *cmd;
 	int (*func)(char **ptr);
