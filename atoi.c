@@ -13,12 +13,13 @@ int _atoi(char *str)
 {
 	int value = 0;
 	int len;
+	size_t i;
 
 	for (len = 0; str[len] != '\0'; len++)
 		;
 
 	len--;
-	for (size_t i = 0; str[i] != '\0'; i++, len--)
+	for (i = 0; str[i] != '\0'; i++, len--)
 	{
 		if (str[i] >= '0' && str[i] <= '9')
 			value += (str[i] - '0') * (_pow(10, len));
@@ -41,8 +42,9 @@ int _atoi(char *str)
 int _pow(long int x, long int y)
 {
 	int result = 1;
+	int i;
 
-	for (int i = 0; i < y; i++)
+	for (i = 0; i < y; i++)
 		result *= x;
 
 	return (result);

@@ -7,13 +7,14 @@
 /**
  * _getenv - gets the variable value from the current enviroment
  *
- * @name: The enviroment variable to search for
+ *@name: The enviroment variable to search for
+ *@allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: returns a pointer to a string containing the value of the
  * enviroment variable returns NULL if the variable wasn't found
  */
 
-char *_getenv(const char *name)
+char *_getenv(const char *name, memStruct *allocMem)
 {
 	size_t index;
 	char **varToken;
@@ -27,8 +28,8 @@ char *_getenv(const char *name)
 		if (_strcmp(varToken[0], name) == 0)
 		{
 			return (varToken[1]);
-			addAddress(varDup);
-			addAddress(varToken);
+			addAddress(varDup, allocMem);
+			addAddress(varToken, allocMem);
 		}
 
 		free(varDup);
@@ -46,14 +47,15 @@ char *_getenv(const char *name)
  * @overwrite: whether to overwrite the variable value if the
  * variable already exists an overwrite value of zero disables
  * overwriting and non zero enables it
+ * @allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: returns zero on success or -1 on error,
  * with errno set to indicate the error
  */
 
-int _setenv(char *name, const char *value, int overwrite)
+int _setenv(char *name, const char *value, int overwrite, memStruct *allocMem)
 {
-	size_t envLen, varLen, i;
+	size_t envLen;
 	char *varPair, *full, *buffer, *varDup, **temp;
 	char join[] = "=";
 	int seen = 0;
@@ -84,8 +86,8 @@ int _setenv(char *name, const char *value, int overwrite)
 		(envLen + 1) * sizeof(char *), sizeof(char *));
 	temp[envLen] = NULL;
 	environ = temp;
-	addAddress((void *)temp);
-	addAddress((void *)varPair);
+	addAddress((void *)temp, allocMem);
+	addAddress((void *)varPair, allocMem);
 	return (0);
 }
 
@@ -93,12 +95,13 @@ int _setenv(char *name, const char *value, int overwrite)
  * _unsetenv - this function removes a variable and its value
  * from the enviroment
  *
- * @name: the name of the variable to remove
+ *@name: the name of the variable to remove
+ *@allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: returns 0 on failure
  */
 
-int _unsetenv(char *name)
+int _unsetenv(char *name, memStruct *allocMem)
 {
 	size_t envLen, newEnvLen, size;
 	char **newEnv, *buffer, *env_dup;
@@ -137,18 +140,6 @@ int _unsetenv(char *name)
 		exit(EXIT_FAILURE);
 	}
 	environ = newEnv;
-	addAddress(newEnv);
+	addAddress(newEnv, allocMem);
 	return (0);
-}
-
-/**
- * printenv - prints the current enviroment
- *
- * Return: none
- */
-
-void printenv(void)
-{
-	for (size_t i = 0; environ[i]; i++)
-		printf("%s\n", environ[i]);
 }

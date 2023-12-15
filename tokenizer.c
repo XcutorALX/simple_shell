@@ -18,8 +18,7 @@ char *_strtok(char *str, char *delim)
 	static int position;
 	static char *strPtr;
 	static int count;
-	size_t start;
-	int new;
+	size_t start, i;
 
 	if (str)
 	{
@@ -28,7 +27,7 @@ char *_strtok(char *str, char *delim)
 		count = 0;
 		for (; strPtr[count] != '\0'; count++)
 		{
-			for (size_t i = 0; delim[i] != '\0'; i++)
+			for (i = 0; delim[i] != '\0'; i++)
 			{
 				if (strPtr[count] == delim[i])
 				{
@@ -55,6 +54,7 @@ char *_strtok(char *str, char *delim)
 				start = position;
 		}
 	}
+	return (NULL);
 }
 
 

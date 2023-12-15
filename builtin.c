@@ -7,12 +7,14 @@
  *
  *@argv: the commnand line input
  *@av: the name of the file being run
+ *@allocMem: a struct keeping track of dynamically allocated memory
  *
  *Return: none
  */
 
-int testBuiltin(char **argv, char *av)
+void testBuiltin(char **argv, char *av, memStruct *allocMem)
 {
+	size_t i;
 	struct stat st;
 	char *temp;
 	builtins commands[] = {
@@ -21,19 +23,19 @@ int testBuiltin(char **argv, char *av)
 		{NULL}
 	};
 
-	for (size_t i = 0; commands[i].cmd != NULL; i++)
+	for (i = 0; commands[i].cmd != NULL; i++)
 	{
 		if (_strcmp(argv[0], commands[i].cmd) == 0)
 		{
 			commands[i].func(argv);
-			return (0);
+			return;
 		}
 	}
 	if (stat(argv[0], &st) == 0)
 		shellHelper(argv, environ);
 	else
 	{
-		temp = searchFile(argv[0]);
+		temp = searchFile(argv[0], allocMem);
 		if (temp != NULL)
 		{
 			argv[0] = temp;
@@ -55,7 +57,7 @@ int testBuiltin(char **argv, char *av)
 int myexit(char **argv)
 {
 	char *valueStr;
-	int value, len;
+	int value;
 
 	if (argv[1] == NULL)
 	{
@@ -81,7 +83,12 @@ int myexit(char **argv)
 
 int printEnv(char **argv)
 {
-	for (size_t i = 0; environ[i] != NULL; i++)
+	size_t i;
+
+	if (!argv)
+		exit(EXIT_FAILURE);
+
+	for (i = 0; environ[i] != NULL; i++)
 		printf("%s\n", environ[i]);
 
 	return (0);

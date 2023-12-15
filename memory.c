@@ -5,32 +5,35 @@
  * addAddress - adds an address to the global array keeping track
  * of dynamically allocated memory
  *
- * @ptr: the address to add to the array
+ *@ptr: the address to add to the array
+ *@list: a struct keeping track of dynamically allocated memory
  *
  * Return: returns 0
  */
 
-int addAddress(void *ptr)
+int addAddress(void *ptr, memStruct *list)
 {
-	void **allocMem;
-	int allocated;
-	int sizeAllocMem;
-
-	if (allocated == sizeAllocMem - 1)
+	if (!(list->memPtr))
 	{
-		sizeAllocMem *= 1.5;
-		allocMem = realloc(allocMem, sizeAllocMem * sizeof(void *));
+		list->memPtr = malloc(1024 * sizeof(void *));
+	}
 
-		if (!allocMem)
+	if (list->allocatedSize == (list->size) - 1)
+	{
+		list->size *= 1.5;
+		list->memPtr = realloc(list->memPtr,
+			(list->size)  * sizeof(void *));
+
+		if (!list->memPtr)
 		{
 			perror("Memory reallocation failed");
 			exit(EXIT_FAILURE);
 		}
 	}
-	allocMem[allocated] = ptr;
+	list->memPtr[list->allocatedSize] = ptr;
 
-	allocated += 1;
-	allocMem[allocated] = NULL;
+	list->allocatedSize += 1;
+	list->memPtr[list->allocatedSize] = NULL;
 
 	return (0);
 }
@@ -38,19 +41,20 @@ int addAddress(void *ptr)
 /**
  * freeMem - frees all dynamically allocated memory not freed
  *
+ *@list: a struct keeping track of dynamically allocated memory
+ *
  * Return: always 0
  */
 
-int freeMem(void)
+int freeMem(memStruct *list)
 {
-	void **allocMem;
 	size_t i;
 
-	for (i = 0; allocMem[i]; i++)
+	for (i = 0; (list->memPtr)[i]; i++)
 	{
-		free(allocMem[i]);
+		free(list->memPtr[i]);
 	}
-	free(allocMem);
+	free(list->memPtr);
 	return (0);
 }
 

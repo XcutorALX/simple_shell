@@ -45,13 +45,14 @@ int shellHelper(char **argv, char **env)
 /**
  * interactiveMode - runs the shell in interactive mode
  *
- * @av: an array of arguments as strings
- * @currentPath: the current path
+ *@av: an array of arguments as strings
+ *@currentPath: the current path
+ *@allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: always 0
  */
 
-int interactiveMode(char **av, char *currentPath)
+int interactiveMode(char **av, char *currentPath, memStruct *allocMem)
 {
 	size_t bufferSize = 1024;
 	struct stat st;
@@ -68,7 +69,7 @@ int interactiveMode(char **av, char *currentPath)
 		while (getLine(&lineptr, &bufferSize, fd) != -1)
 		{
 			command = tokenize(lineptr, delim);
-			testBuiltin(command, av[0]);
+			testBuiltin(command, av[0], allocMem);
 		}
 	}
 	else
@@ -80,12 +81,13 @@ int interactiveMode(char **av, char *currentPath)
 /**
  * shellloop - the main shell loop
  *
- * @av: arguments
+ *@av: arguments
+ *@allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: none
  */
 
-int shellloop(char **av)
+int shellloop(char **av, memStruct *allocMem)
 {
 	char *lineptr = NULL;
 	size_t bufferSize = 1024;
@@ -102,7 +104,7 @@ int shellloop(char **av)
 	while (getLine(&lineptr, &bufferSize, STDIN_FILENO) != -1)
 	{
 		command = tokenize(lineptr, delim);
-		testBuiltin(command, av[0]);
+		testBuiltin(command, av[0], allocMem);
 
 		if (terminal == 1)
 		{
@@ -112,4 +114,5 @@ int shellloop(char **av)
 	}
 	if (terminal == 1)
 		printf("\n");
+	return (0);
 }

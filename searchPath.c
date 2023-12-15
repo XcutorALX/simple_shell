@@ -7,21 +7,22 @@
 /**
  * searchFile - this function searches for a file in the system PATH
  *
- * @fileName: the name of the file to search for
+ *@fileName: the name of the file to search for
+ *@allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: 1 if found and 0 if not found
  */
 
-char *searchFile(char *fileName)
+char *searchFile(char *fileName, memStruct *allocMem)
 {
-	char *path = _getenv("PATH");
+	char *path = _getenv("PATH", allocMem);
 	char *path_copy = _strdup(path);
 	char **pathTokens;
 	char *fullPath;
-	size_t index, fileLength, i;
+	size_t index, fileLength, i, j;
 	struct stat st;
 
-	pathTokens = tokenize(path, DELIM);
+	pathTokens = tokenize(path_copy, DELIM);
 
 	if (!pathTokens)
 	{
@@ -40,7 +41,7 @@ char *searchFile(char *fileName)
 			fullPath[i] = pathTokens[index][i];
 		}
 		fullPath[i++] = '/';
-		for (size_t j = 0; fileName[j] != '\0'; j++, i++)
+		for (j = 0; fileName[j] != '\0'; j++, i++)
 		{
 			fullPath[i] = fileName[j];
 		}

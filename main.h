@@ -44,23 +44,34 @@ typedef struct built
 	int (*func)(char **ptr);
 } builtins;
 
-extern void **allocMem;
-extern int allocated;
-extern int sizeAllocMem;
+/**
+ * struct memoryStruct - a structure to keep track of
+ * dynamically allocated memory
+ * @memPtr: an array of pointer
+ * @size: the size of the array
+ * @sizeAllocated: current occupied space of the array
+ */
+
+typedef struct memoryStruct
+{
+	void **memPtr;
+	int size;
+	int allocatedSize;
+} memStruct;
 
 int getLine(char **lineptr, size_t *bufferSize, int fd);
 char **strTok(char *str, char *delim);
 char **tokenize(char *str, char *delim);
 int shellHelper(char **argv, char **env);
-char *_getenv(const char *varName);
+char *_getenv(const char *varName, memStruct *allocMem);
 void printPath(void);
 int print_list(list_l *list);
 int add_node(list_l *list, Node *newNode);
 list_l *createList(void);
-int _setenv(char *name, const char *value, int overwrite);
-int freeMem(void);
-int addAddress(void *ptr);
-int _unsetenv(char *name);
+int _setenv(char *name, const char *value, int overwrite, memStruct *allocMem);
+int freeMem(memStruct *list);
+int addAddress(void *ptr, memStruct *list);
+int _unsetenv(char *name, memStruct *allocMem);
 char *_strdup(char *str);
 char *strcon(const char *strOne, const char *strTwo);
 char *_strtok(char *str, char *delim);
@@ -68,14 +79,14 @@ int _strcmp(const char *strone, const char *strtwo);
 void *_realloc(void *ptr, int size, int newSize, int mode);
 int _memcpy(char *ptr, char *newPtr);
 int memcpystr(char **ptr, char **newptr);
-char *searchFile(char *fileName);
+char *searchFile(char *fileName, memStruct *allocMem);
 int printEnv(char **argv);
 int myexit(char **argv);
 int _atoi(char *str);
 int _pow(long int x, long int y);
-int testBuiltin(char **argv, char *av);
-int interactiveMode(char **av, char *currentPath);
-int shellloop(char **av);
+void testBuiltin(char **argv, char *av, memStruct *allocMem);
+int interactiveMode(char **av, char *currentPath, memStruct *allocMEm);
+int shellloop(char **av, memStruct *allocMem);
 int my_fgetc(int fd);
 
 #endif

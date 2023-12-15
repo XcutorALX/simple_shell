@@ -15,17 +15,21 @@
 
 int main(int ac, char **av)
 {
-	size_t bufferSize = 1024;
 	size_t dirLen = 1024;
-	char delim[] = " ";
-	char **command, *dir, *temp;
-	void **allocMem;
-	int allocated = 0;
-	int sizeAllocMem = 0;
-	char buffer[1024];
+	char *dir;
+	memStruct *allocMem;
 
-	allocMem = malloc(sizeAllocMem * sizeof(void));
-	allocMem[0] = NULL;
+	allocMem = malloc(sizeof(memStruct));
+
+	if (!allocMem)
+	{
+		perror("Memory allocation failed");
+		exit(EXIT_FAILURE);
+	}
+
+	allocMem->size = 0;
+	allocMem->allocatedSize = 0;
+	allocMem->memPtr = NULL;
 	dir = malloc(dirLen * sizeof(char));
 
 	if (ac < 2)
@@ -35,11 +39,11 @@ int main(int ac, char **av)
 			dir = _realloc(dir, dirLen, dirLen * 1.5, sizeof(char *));
 			dirLen *= 1.5;
 		}
-		shellloop(av);
+		shellloop(av, allocMem);
 	}
 	else
 	{
-		interactiveMode(av, dir);
+		interactiveMode(av, dir, allocMem);
 	}
 
 /**	freeMem();**/
