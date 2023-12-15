@@ -46,6 +46,7 @@ int shellHelper(char **argv, char **env)
  * interactiveMode - runs the shell in interactive mode
  *
  * @av: an array of arguments as strings
+ * @currentPath: the current path
  *
  * Return: always 0
  */
@@ -59,16 +60,16 @@ int interactiveMode(char **av, char *currentPath)
 	char delim[] = " ";
 	char **command;
 	int fd;
-
 	char *fullPath = strcon(currentPath, file);
+
 	if (stat(fullPath, &st) == 0)
 	{
 		fd = open(fullPath, O_RDONLY);
-		while(getLine(&lineptr, &bufferSize, fd) != -1)
+		while (getLine(&lineptr, &bufferSize, fd) != -1)
 		{
 			command = tokenize(lineptr, delim);
 			testBuiltin(command, av[0]);
-		}	
+		}
 	}
 	else
 		printf("%s: 1: %s: not found\n", av[0], file);

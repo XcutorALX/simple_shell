@@ -8,7 +8,7 @@
  *
  *@lineptr: an array of string
  *@bufferSize: the length of characters to read
- *@stream: the file to read from
+ *@fd: the file to descriptor of the file to read from
  *
  * Return: returns -1 on failure to read a line or EOF else it returns
  * the number of characters read

@@ -1,20 +1,24 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int my_fgetc(int fd) {
-//    int fd = fileno(stream); // Get file descriptor from the FILE pointer
+/**
+ * my_fgetc - a function that reads a character from a file
+ *
+ * @fd: the file descriptor to read from
+ *
+ * Return: returms EOF if theres nothing to read
+ */
 
-    if (fd == -1) {
-        return EOF; // Return EOF on error
-    }
+int my_fgetc(int fd)
+{
+	char c;
+	ssize_t bytesRead = read(fd, &c, 1);
 
-    char c;
-    ssize_t bytesRead = read(fd, &c, 1); // Read a single character
+	if (fd == -1)
+		return (EOF);
 
-    if (bytesRead == -1 || bytesRead == 0) {
-        return EOF; // Return EOF on error or end-of-file
-    }
+	if (bytesRead == -1 || bytesRead == 0)
+		return (EOF);
 
-    return (int)c; // Return the character read as an integer
+	return ((int)c);
 }
-
