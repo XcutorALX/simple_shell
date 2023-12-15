@@ -34,9 +34,9 @@ int getLine(char **lineptr, size_t *bufferSize, int fd)
 	{
 		if (i == *bufferSize - 1)
 		{
+			*lineptr = _realloc(*lineptr, *bufferSize * sizeof(char),
+					*bufferSize * sizeof(char) * 1.5, sizeof(char));
 			*bufferSize *= 1.5;
-			*lineptr = realloc(*lineptr, *bufferSize * sizeof(char));
-
 			if (!(*lineptr))
 			{
 				perror("Memory reallocation error");
@@ -51,9 +51,51 @@ int getLine(char **lineptr, size_t *bufferSize, int fd)
 	{
 		return (-1);
 	}
-	*bufferSize = i + 1;
+	*bufferSize = i + 3;
 	*lineptr = realloc(*lineptr, *bufferSize * sizeof(char));
 	(*lineptr)[i] = '\0';
+	return (i);
+}
 
+int getPipe(char **lineptr, size_t *bufferSize, int fd)
+{
+	size_t i = 0;
+	int c;
+
+	if (!(*lineptr))
+	{
+		*bufferSize = 1024;
+		*lineptr = malloc(*bufferSize * sizeof(char));
+
+		if (!(*lineptr))
+		{
+			perror("Memory reallocation error");
+			exit(EXIT_FAILURE);
+		}
+	}
+	while ((c = my_fgetc(fd)) != EOF)
+	{
+		if (i == *bufferSize - 1)
+		{
+			*lineptr = _realloc(*lineptr, *bufferSize * sizeof(char),
+					*bufferSize * sizeof(char) * 1.5, sizeof(char));
+			*bufferSize *= 1.5;
+			if (!(*lineptr))
+			{
+				perror("Memory reallocation error");
+				exit(EXIT_FAILURE);
+			}
+		}
+		(*lineptr)[i] = c;
+		i++;
+	}
+
+	if (i == 0 && c == EOF)
+	{
+		return (-1);
+	}
+	*bufferSize = i + 3;
+	*lineptr = realloc(*lineptr, *bufferSize * sizeof(char));
+	(*lineptr)[i] = '\0';
 	return (i);
 }

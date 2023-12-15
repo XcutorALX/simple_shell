@@ -43,7 +43,12 @@ char *_strtok(char *str, char *delim)
 		return (NULL);
 	for (; position <= count; position++)
 	{
-		if (position)
+		if (position == count)
+		{
+			position++;
+			return (&strPtr[start]);
+		}
+		if (position != 0)
 		{
 			if (strPtr[position - 1] != '\0' && strPtr[position] == '\0')
 			{
@@ -87,7 +92,7 @@ char **tokenize(char *str, char *delim)
 	{
 		return (NULL);
 	}
-	for (count = 1; (buffer = _strtok(NULL, delim)) != NULL; count++)
+	for (count = 1; (buffer = _strtok(NULL, delim)) != NULL && *buffer != '\0'; count++)
 	{
 		if (count == size - 1)
 		{
@@ -101,6 +106,7 @@ char **tokenize(char *str, char *delim)
 		}
 		split[count] = buffer;
 	}
+
 	split[count++] = NULL;
 	size = count + 1;
 	split = realloc(split, size * sizeof(char *));

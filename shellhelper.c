@@ -97,28 +97,40 @@ int shellloop(char **av, memStruct *allocMem)
 	char *lineptr = NULL;
 	size_t bufferSize = 1024;
 	char delim[] = " ";
-	char **command;
-	int terminal;
+	char newline[] = "\n";
+	char **command, **lines;
+	int terminal, i;
 
 	terminal = isatty(STDIN_FILENO);
-	if (terminal == 1)
+	if (terminal != 1)
+	{
+		if(getPipe(&lineptr, &bufferSize, STDIN_FILENO) != -1)
+		{
+			lines = tokenize(lineptr, newline);
+			
+			for (i = 0; lines[i] != NULL; i++)
+			{
+				command = tokenize(lines[i], delim);
+				testBuiltin(command, av[0], allocMem);
+
+				free(command);
+			}
+			free(lines);
+		}
+	}
+	else
 	{
 		printstr("$ ");
 		fflush(stdout);
-	}
-	while (getLine(&lineptr, &bufferSize, STDIN_FILENO) != -1)
-	{
-		command = tokenize(lineptr, delim);
-		testBuiltin(command, av[0], allocMem);
-
-		if (terminal == 1)
+		while (getLine(&lineptr, &bufferSize, STDIN_FILENO) != -1)
 		{
+			command = tokenize(lineptr, delim);
+			testBuiltin(command, av[0], allocMem);
 			printstr("$ ");
 			fflush(stdout);
+			free(command);
 		}
-		free(command);
 	}
-
 	free(lineptr);
 	return (0);
 }

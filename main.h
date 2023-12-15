@@ -64,6 +64,7 @@ void printerr(char *str);
 int _putchar(char c);
 void printstr(char *str);
 int getLine(char **lineptr, size_t *bufferSize, int fd);
+int getPipe(char **lineptr, size_t *bufferSize, int fd);
 char **strTok(char *str, char *delim);
 char **tokenize(char *str, char *delim);
 int shellHelper(char **argv, char **env);
