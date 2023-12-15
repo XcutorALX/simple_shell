@@ -42,7 +42,14 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 			shellHelper(argv, environ);
 		}
 		else
-			printf("%s: 1: %s: not found\n", av, argv[0]);
+		{
+			printstr(av);
+			printstr(": 1: ");
+			printstr(argv[0]);
+			printstr("not found");
+			_putchar('\n');
+		}
+		free(temp);
 	}
 }
 
@@ -89,7 +96,7 @@ int printEnv(char **argv)
 		exit(EXIT_FAILURE);
 
 	for (i = 0; environ[i] != NULL; i++)
-		printf("%s\n", environ[i]);
+		printstr(environ[i]);
 
 	return (0);
 }

@@ -50,7 +50,7 @@ int shellHelper(char **argv, char **env)
  *@allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: always 0
- */
+*/
 
 int interactiveMode(char **av, char *currentPath, memStruct *allocMem)
 {
@@ -73,8 +73,13 @@ int interactiveMode(char **av, char *currentPath, memStruct *allocMem)
 		}
 	}
 	else
-		printf("%s: 1: %s: not found\n", av[0], file);
-
+	{
+		printstr(av[0]);
+		printstr(": 1: ");
+		printstr(file);
+		printstr(": not found");
+		_putchar('\n');
+	}
 	exit(0);
 }
 
@@ -98,7 +103,7 @@ int shellloop(char **av, memStruct *allocMem)
 	terminal = isatty(STDIN_FILENO);
 	if (terminal == 1)
 	{
-		printf("$ ");
+		printstr("$ ");
 		fflush(stdout);
 	}
 	while (getLine(&lineptr, &bufferSize, STDIN_FILENO) != -1)
@@ -108,11 +113,12 @@ int shellloop(char **av, memStruct *allocMem)
 
 		if (terminal == 1)
 		{
-			printf("$ ");
+			printstr("$ ");
 			fflush(stdout);
 		}
+		free(command);
 	}
-	if (terminal == 1)
-		printf("\n");
+
+	free(lineptr);
 	return (0);
 }

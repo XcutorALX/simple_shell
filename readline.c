@@ -51,7 +51,7 @@ int getLine(char **lineptr, size_t *bufferSize, int fd)
 	{
 		return (-1);
 	}
-	*bufferSize = i;
+	*bufferSize = i + 1;
 	*lineptr = realloc(*lineptr, *bufferSize * sizeof(char));
 	(*lineptr)[i] = '\0';
 

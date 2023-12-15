@@ -27,12 +27,13 @@ char *_getenv(const char *name, memStruct *allocMem)
 
 		if (_strcmp(varToken[0], name) == 0)
 		{
-			return (varToken[1]);
 			addAddress(varDup, allocMem);
 			addAddress(varToken, allocMem);
+			return (varToken[1]);
 		}
 
 		free(varDup);
+		free(varToken);
 	}
 	return (NULL);
 }
@@ -117,7 +118,7 @@ int _unsetenv(char *name, memStruct *allocMem)
 			size *= 1.5;
 			if (!size)
 			{
-				perror("Memory allocation error");
+				printstr("Memory allocation error");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -136,7 +137,7 @@ int _unsetenv(char *name, memStruct *allocMem)
 	size = newEnvLen;
 	if (!size)
 	{
-		perror("Memory allocation error");
+		printstr("Memory allocation error");
 		exit(EXIT_FAILURE);
 	}
 	environ = newEnv;

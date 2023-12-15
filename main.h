@@ -59,6 +59,10 @@ typedef struct memoryStruct
 	int allocatedSize;
 } memStruct;
 
+int puterr(char c);
+void printerr(char *str);
+int _putchar(char c);
+void printstr(char *str);
 int getLine(char **lineptr, size_t *bufferSize, int fd);
 char **strTok(char *str, char *delim);
 char **tokenize(char *str, char *delim);

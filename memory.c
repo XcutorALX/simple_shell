@@ -13,9 +13,11 @@
 
 int addAddress(void *ptr, memStruct *list)
 {
-	if (!(list->memPtr))
+	if (list->memPtr == NULL)
 	{
 		list->memPtr = malloc(1024 * sizeof(void *));
+		list->memPtr[0] = NULL;
+		list->size = 1024;
 	}
 
 	if (list->allocatedSize == (list->size) - 1)

@@ -49,10 +49,14 @@ char *searchFile(char *fileName, memStruct *allocMem)
 
 		if (stat(fullPath, &st) == 0)
 		{
+			free(path_copy);
+			free(pathTokens);
 			return (fullPath);
 		}
 	}
-
+	
+	free(path_copy);
+	free(pathTokens);
 	free(fullPath);
 	return (NULL);
 }

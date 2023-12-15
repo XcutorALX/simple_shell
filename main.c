@@ -30,6 +30,7 @@ int main(int ac, char **av)
 	allocMem->size = 0;
 	allocMem->allocatedSize = 0;
 	allocMem->memPtr = NULL;
+
 	dir = malloc(dirLen * sizeof(char));
 
 	if (ac < 2)
@@ -46,6 +47,10 @@ int main(int ac, char **av)
 		interactiveMode(av, dir, allocMem);
 	}
 
-/**	freeMem();**/
+	if (allocMem->memPtr)
+		freeMem(allocMem);
+
+	free(dir);
+	free(allocMem);
 	return (0);
 }
