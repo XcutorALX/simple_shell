@@ -56,5 +56,5 @@ void printerr(char *str)
 	size_t i;
 
 	for (i = 0; str[i] != '\0'; i++)
-		_putchar(str[i]);
+		puterr(str[i]);
 }

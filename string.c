@@ -14,6 +14,9 @@ char *_strdup(char *str)
 	char *duplicate;
 	size_t size, index;
 
+	if (!str)
+		return (NULL);
+	
 	size = 1024;
 	duplicate = malloc(size * sizeof(char));
 

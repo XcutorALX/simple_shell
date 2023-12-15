@@ -43,11 +43,11 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 		}
 		else
 		{
-			printstr(av);
-			printstr(": 1: ");
-			printstr(argv[0]);
-			printstr("not found");
-			_putchar('\n');
+			printerr(av);
+			printerr(": 1: ");
+			printerr(argv[0]);
+			printerr(": not found");
+			puterr('\n');
 		}
 		free(temp);
 	}

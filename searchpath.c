@@ -16,12 +16,15 @@
 char *searchFile(char *fileName, memStruct *allocMem)
 {
 	char *path = _getenv("PATH", allocMem);
-	char *path_copy = _strdup(path);
+	char *path_copy;
 	char **pathTokens;
 	char *fullPath;
 	size_t index, fileLength, i, j;
 	struct stat st;
-
+	
+	if (!path)
+		return (NULL);
+	path_copy = _strdup(path);
 	pathTokens = tokenize(path_copy, DELIM);
 
 	if (!pathTokens)
