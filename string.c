@@ -103,3 +103,24 @@ int _strcmp(const char *strone, const char *strtwo)
 
 	return (0);
 }
+
+/**
+ * isempty - checks if a string is empty
+ *
+ *@str: the string to check
+ *
+ *Return: None
+ */
+
+int isempty(char *str)
+{
+	size_t i = 0;
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (str[i] != ' ')
+			return (-1);
+	}
+
+	return (0);
+}

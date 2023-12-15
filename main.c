@@ -32,7 +32,7 @@ int main(int ac, char **av)
 	allocMem->memPtr = NULL;
 
 	dir = malloc(dirLen * sizeof(char));
-
+	addAddress(dir, allocMem);
 	if (ac < 2)
 	{
 		while (getcwd(dir, dirLen) == NULL)
@@ -50,7 +50,6 @@ int main(int ac, char **av)
 	if (allocMem->memPtr)
 		freeMem(allocMem);
 
-	free(dir);
 	free(allocMem);
 	return (0);
 }

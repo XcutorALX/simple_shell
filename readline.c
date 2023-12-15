@@ -78,7 +78,7 @@ int getPipe(char **lineptr, size_t *bufferSize, int fd)
 		if (i == *bufferSize - 1)
 		{
 			*lineptr = _realloc(*lineptr, *bufferSize * sizeof(char),
-					*bufferSize * sizeof(char) * 1.5, sizeof(char));
+					*bufferSize * 1.5 * sizeof(char), sizeof(char));
 			*bufferSize *= 1.5;
 			if (!(*lineptr))
 			{
@@ -87,6 +87,7 @@ int getPipe(char **lineptr, size_t *bufferSize, int fd)
 			}
 		}
 		(*lineptr)[i] = c;
+		(*lineptr)[i + 1] = '\0';
 		i++;
 	}
 
@@ -94,8 +95,8 @@ int getPipe(char **lineptr, size_t *bufferSize, int fd)
 	{
 		return (-1);
 	}
-	*bufferSize = i + 3;
-	*lineptr = realloc(*lineptr, *bufferSize * sizeof(char));
-	(*lineptr)[i] = '\0';
+	*lineptr = _realloc(*lineptr, *bufferSize * sizeof(char),
+			(i + 2) * sizeof(char), sizeof(char));
+	*bufferSize = i + 2;
 	return (i);
 }

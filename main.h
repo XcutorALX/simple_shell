@@ -59,6 +59,7 @@ typedef struct memoryStruct
 	int allocatedSize;
 } memStruct;
 
+int isempty(char *str);
 int puterr(char c);
 void printerr(char *str);
 int _putchar(char c);

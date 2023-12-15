@@ -80,7 +80,8 @@ int interactiveMode(char **av, char *currentPath, memStruct *allocMem)
 		printstr(": not found");
 		_putchar('\n');
 	}
-	exit(0);
+
+	return (0);
 }
 
 /**
@@ -108,13 +109,16 @@ int shellloop(char **av, memStruct *allocMem)
 		{
 			lines = tokenize(lineptr, newline);
 			
-			for (i = 0; lines[i] != NULL; i++)
-			{
-				command = tokenize(lines[i], delim);
-				testBuiltin(command, av[0], allocMem);
+			if (isempty(lineptr) != 0)
+			{	for (i = 0; lines[i] != NULL; i++)
+				{
+					command = tokenize(lines[i], delim);
+					testBuiltin(command, av[0], allocMem);
 
-				free(command);
+					free(command);
+				}
 			}
+
 			free(lines);
 		}
 	}

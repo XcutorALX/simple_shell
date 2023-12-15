@@ -108,8 +108,8 @@ char **tokenize(char *str, char *delim)
 	}
 
 	split[count++] = NULL;
+	split = _realloc(split, size * sizeof(char *), (count + 1) * sizeof(char *), sizeof(char *));
 	size = count + 1;
-	split = realloc(split, size * sizeof(char *));
 	if (!split)
 	{
 		perror("Memory reallocation error third");
