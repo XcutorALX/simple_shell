@@ -21,7 +21,7 @@ char *searchFile(char *fileName, memStruct *allocMem)
 	char *fullPath;
 	size_t index, fileLength, i, j;
 	struct stat st;
-	
+
 	if (!path)
 		return (NULL);
 	path_copy = _strdup(path);

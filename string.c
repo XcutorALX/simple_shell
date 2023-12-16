@@ -98,7 +98,7 @@ int _strcmp(const char *strone, const char *strtwo)
 {
 	size_t i;
 
-	for (i = 0; strone[i] != '\0' && strtwo[i] != '\0'; i++)
+	for (i = 0; strone[i] != '\0' || strtwo[i] != '\0'; i++)
 	{
 		if (strone[i] != strtwo[i])
 			return (1);
