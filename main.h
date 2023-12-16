@@ -61,6 +61,7 @@ typedef struct built
 	int (*func)(char **ptr, memStruct *allocMem);
 } builtins;
 
+int myexists(memStruct *allocMem, void *ptr);
 int isempty(char *str);
 int puterr(char c);
 void printerr(char *str);

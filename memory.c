@@ -20,6 +20,9 @@ int addAddress(void *ptr, memStruct *list)
 		list->size = 1024;
 	}
 
+	if (myexists(list, ptr) == 0)
+		return 0;
+
 	if (list->allocatedSize == (list->size) - 1)
 	{
 		list->size *= 1.5;
@@ -140,4 +143,26 @@ int memcpystr(char **ptr, char **newptr)
 	newptr[i] = NULL;
 
 	return (0);
+}
+
+
+/**
+ * myexists - tests if a pointer exists in an array
+ *
+ *@allocMem: an array that keeps track of dynamically allocated memory
+ *@ptr: the pointer to compare
+ *
+ *Returns: 0 if the ptr isnt in the list and 1 if it is
+ */
+
+int myexists(memStruct *allocMem, void *ptr)
+{
+	int i;
+
+	for (i = 0; (allocMem->memPtr)[i] != NULL; i++)
+	{
+		if (ptr == allocMem->memPtr[i])
+			return 0;
+	}
+	return 1;
 }
