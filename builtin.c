@@ -52,7 +52,7 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 			printerr(argv[0]);
 			printerr(": not found");
 			puterr('\n');
-			allocMem->myerrno = 2;
+			allocMem->myerrno = 127;
 			free(temp);
 		}
 	}
@@ -112,11 +112,16 @@ int printEnv(char **argv, memStruct *allocMem)
 		;
 
 	if (!argv)
-		exit(EXIT_FAILURE);
+	{
+		allocMem->myerrno = 1;
+		return (-1);
+	}
 
 	for (i = 0; environ[i] != NULL; i++)
+	{
 		printstr(environ[i]);
-
+		_putchar('\n');
+	}
 	return (0);
 }
 
