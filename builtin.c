@@ -31,11 +31,12 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 			return;
 		}
 	}
-	if (stat(argv[0], &st) == 0)
+	if (stat(argv[0], &st) == 0 && argv[0][0] == '/')
 		shellHelper(argv, environ);
 	else
 	{
 		temp = searchFile(argv[0], allocMem);
+		fflush(stdout);
 		if (temp != NULL)
 		{
 			argv[0] = temp;
