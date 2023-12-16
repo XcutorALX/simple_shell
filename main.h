@@ -20,6 +20,7 @@ typedef struct memoryStruct
 	int size;
 	int allocatedSize;
 	int myerrno;
+	char *name;
 } memStruct;
 
 

@@ -84,8 +84,14 @@ int myexit(char **argv, memStruct *allocMem)
 	{
 		valueStr = argv[1];
 		value = _atoi(valueStr);
-		if (value == -1)
-			return (1);
+		if (value < 0)
+		{
+			printerr(allocMem->name);
+			printerr(": 1: exit: Illegal number: ");
+			printerr(valueStr);
+			puterr('\n');
+			value = 2;
+		}
 	}
 
 	if (allocMem->memPtr)

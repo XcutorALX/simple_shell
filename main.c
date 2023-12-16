@@ -32,6 +32,7 @@ int main(int ac, char **av)
 	allocMem->allocatedSize = 0;
 	allocMem->myerrno = 0;
 	allocMem->memPtr = NULL;
+	allocMem->name = av[0];
 
 	dir = malloc(dirLen * sizeof(char));
 

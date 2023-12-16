@@ -12,11 +12,18 @@
 int _atoi(char *str)
 {
 	int value = 0;
-	int len;
+	int len, sign;
 	size_t i;
 
+	sign = 1;
 	for (len = 0; str[len] != '\0'; len++)
 		;
+
+	if (str[0] == '-')
+	{
+		str[0] = '0';
+		sign = -1;
+	}
 
 	len--;
 	for (i = 0; str[i] != '\0'; i++, len--)
@@ -27,7 +34,10 @@ int _atoi(char *str)
 			return (-1);
 	}
 
-	return (value);
+	if (sign == -1)
+		str[0] = '-';
+
+	return (value * sign);
 }
 
 /**
