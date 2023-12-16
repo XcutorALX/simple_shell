@@ -120,7 +120,8 @@ int shellloop(char **av, memStruct *allocMem)
 				}
 			}
 			else
-			{
+			{	
+				free(lineptr);
 				free(lines);
 			}
 		}
