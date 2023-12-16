@@ -113,13 +113,16 @@ int shellloop(char **av, memStruct *allocMem)
 			{	for (i = 0; lines[i] != NULL; i++)
 				{
 					command = tokenize(lines[i], delim);
+					addAddress(lineptr, allocMem);
+					addAddress(lines, allocMem);
+					addAddress(command, allocMem);
 					testBuiltin(command, av[0], allocMem);
-
-					free(command);
 				}
 			}
-
-			free(lines);
+			else
+			{
+				free(lines);
+			}
 		}
 	}
 	else

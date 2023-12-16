@@ -27,7 +27,7 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 	{
 		if (_strcmp(argv[0], commands[i].cmd) == 0)
 		{
-			commands[i].func(argv);
+			commands[i].func(argv, allocMem);
 			return;
 		}
 	}
@@ -48,6 +48,8 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 			printerr(argv[0]);
 			printerr(": not found");
 			puterr('\n');
+			free(temp);
+			_myexit(127, allocMem);
 		}
 		free(temp);
 	}
@@ -56,18 +58,23 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 /**
  * myexit - exits the shell
  *
- * @argv: an array of arguments as strings
+ *@argv: an array of arguments as strings
+ *@allocMem: a struct containing details about allocated memory
  *
  * Return: returns 1 if the exit argument is not an int
  */
 
-int myexit(char **argv)
+int myexit(char **argv, memStruct *allocMem)
 {
 	char *valueStr;
 	int value;
 
 	if (argv[1] == NULL)
 	{
+		if (allocMem->memPtr)
+			freeMem(allocMem);
+
+		free(allocMem);
 		exit(0);
 	}
 	else
@@ -77,6 +84,11 @@ int myexit(char **argv)
 		if (value == -1)
 			return (1);
 	}
+
+	if (allocMem->memPtr)
+		freeMem(allocMem);
+
+	free(allocMem);
 	exit(value);
 }
 
@@ -88,9 +100,13 @@ int myexit(char **argv)
  * Return: always 0
  */
 
-int printEnv(char **argv)
+int printEnv(char **argv, memStruct *allocMem)
 {
 	size_t i;
+	int count;
+
+	for(count = 0; count < allocMem->size; count++)
+		;
 
 	if (!argv)
 		exit(EXIT_FAILURE);
@@ -99,4 +115,22 @@ int printEnv(char **argv)
 		printstr(environ[i]);
 
 	return (0);
+}
+
+/**
+ * _myexit - unlike myexit, this function takes in an int
+ *
+ *@exitcode: the exit code to use
+ *@allocMem: a list that keeps track of allocated memory
+ *
+ *Return: void
+ */
+
+void _myexit(int exitcode, memStruct *allocMem)
+{
+	if (allocMem->memPtr)
+		freeMem(allocMem);
+	
+	free(allocMem);
+	exit(exitcode);
 }

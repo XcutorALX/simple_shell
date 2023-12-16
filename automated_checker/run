@@ -43,7 +43,7 @@ test_file() {
   if [[ $(uname -r) =~ "arch" ]]; then
     export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
   fi
-  output=$(/usr/bin/env bash "$checker" --valgrind "$hsh" "$1")
+  output=$(/usr/bin/env bash "$checker" --valgrind --leak-check=full "$hsh" "$1")
 
   if [ "$output" == "OK" ]; then
     echo -e "\e[32mOK\e[0m"

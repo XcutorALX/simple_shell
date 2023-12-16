@@ -6,6 +6,23 @@
 extern char **environ;
 
 /**
+ * struct memoryStruct - a structure to keep track of
+ * dynamically allocated memory
+ * @memPtr: an array of pointer
+ * @size: the size of the array
+ * @sizeAllocated: current occupied space of the array
+ */
+
+typedef struct memoryStruct
+{
+	void **memPtr;
+	int size;
+	int allocatedSize;
+} memStruct;
+
+
+
+/**
  * struct Node - a node of a linked list
  * @num: the number field
  * @data: a string
@@ -41,23 +58,8 @@ typedef struct list_k
 typedef struct built
 {
 	char *cmd;
-	int (*func)(char **ptr);
+	int (*func)(char **ptr, memStruct *allocMem);
 } builtins;
-
-/**
- * struct memoryStruct - a structure to keep track of
- * dynamically allocated memory
- * @memPtr: an array of pointer
- * @size: the size of the array
- * @sizeAllocated: current occupied space of the array
- */
-
-typedef struct memoryStruct
-{
-	void **memPtr;
-	int size;
-	int allocatedSize;
-} memStruct;
 
 int isempty(char *str);
 int puterr(char c);
@@ -86,13 +88,14 @@ void *_realloc(void *ptr, int size, int newSize, int mode);
 int _memcpy(char *ptr, char *newPtr);
 int memcpystr(char **ptr, char **newptr);
 char *searchFile(char *fileName, memStruct *allocMem);
-int printEnv(char **argv);
-int myexit(char **argv);
+int printEnv(char **argv, memStruct *allocMem);
+int myexit(char **argv, memStruct *allocMem);
 int _atoi(char *str);
 int _pow(long int x, long int y);
 void testBuiltin(char **argv, char *av, memStruct *allocMem);
 int interactiveMode(char **av, char *currentPath, memStruct *allocMEm);
 int shellloop(char **av, memStruct *allocMem);
 int my_fgetc(int fd);
+void _myexit(int exitcode, memStruct *allocMem);
 
 #endif
