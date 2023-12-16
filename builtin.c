@@ -31,7 +31,8 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 			return;
 		}
 	}
-	if (stat(argv[0], &st) == 0 && argv[0][0] == '/')
+	if (stat(argv[0], &st) == 0 &&
+		(argv[0][0] == '/' || argv[0][0] == '.'))
 		shellHelper(argv, environ);
 	else
 	{
