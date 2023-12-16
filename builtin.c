@@ -1,5 +1,6 @@
 #include "main.h"
 #include <sys/stat.h>
+#include <errno.h>
 
 /**
  * testBuiltin - handles builtin functions if any
@@ -33,7 +34,7 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 	}
 	if (stat(argv[0], &st) == 0 &&
 		(argv[0][0] == '/' || argv[0][0] == '.'))
-		shellHelper(argv, environ);
+		shellHelper(argv, environ, allocMem);
 	else
 	{
 		temp = searchFile(argv[0], allocMem);
@@ -41,7 +42,8 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 		if (temp != NULL)
 		{
 			argv[0] = temp;
-			shellHelper(argv, environ);
+			shellHelper(argv, environ, allocMem);
+			free(temp);
 		}
 		else
 		{
@@ -50,10 +52,9 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 			printerr(argv[0]);
 			printerr(": not found");
 			puterr('\n');
+			allocMem->myerrno = 2;
 			free(temp);
-			_myexit(127, allocMem);
 		}
-		free(temp);
 	}
 }
 
@@ -69,7 +70,7 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 int myexit(char **argv, memStruct *allocMem)
 {
 	char *valueStr;
-	int value;
+	int value = allocMem->myerrno;
 
 	if (argv[1] == NULL)
 	{
@@ -77,7 +78,7 @@ int myexit(char **argv, memStruct *allocMem)
 			freeMem(allocMem);
 
 		free(allocMem);
-		exit(0);
+		exit(value);
 	}
 	else
 	{

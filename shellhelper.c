@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 
 /**
  * shellHelper - runs shell commands with fork and exceve
@@ -15,7 +16,7 @@
  *Return: always 0
  */
 
-int shellHelper(char **argv, char **env)
+int shellHelper(char **argv, char **env, memStruct *allocMem)
 {
 	int status;
 	pid_t child_pid;
@@ -23,7 +24,7 @@ int shellHelper(char **argv, char **env)
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		perror("At forking ERROR:");
+		printerr("At forking ERROR:");
 		return (-1);
 	}
 
@@ -31,12 +32,14 @@ int shellHelper(char **argv, char **env)
 	{
 		if (execve(argv[0], argv, env) == -1)
 		{
-			perror("At execve ERROR:");
+			printerr("At execve ERROR: ");
+			exit(errno);
 		}
 	}
 	else
 	{
 		wait(&status);
+		allocMem->myerrno = WEXITSTATUS(status);
 	}
 
 	return (0);

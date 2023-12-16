@@ -11,6 +11,7 @@ extern char **environ;
  * @memPtr: an array of pointer
  * @size: the size of the array
  * @sizeAllocated: current occupied space of the array
+ * @errno: the current errno
  */
 
 typedef struct memoryStruct
@@ -18,6 +19,7 @@ typedef struct memoryStruct
 	void **memPtr;
 	int size;
 	int allocatedSize;
+	int myerrno;
 } memStruct;
 
 
@@ -71,7 +73,7 @@ int getLine(char **lineptr, size_t *bufferSize, int fd);
 int getPipe(char **lineptr, size_t *bufferSize, int fd);
 char **strTok(char *str, char *delim);
 char **tokenize(char *str, char *delim);
-int shellHelper(char **argv, char **env);
+int shellHelper(char **argv, char **env, memStruct *allocMem);
 char *_getenv(const char *varName, memStruct *allocMem);
 void printPath(void);
 int print_list(list_l *list);

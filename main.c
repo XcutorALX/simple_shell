@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "main.h"
+#include <errno.h>
 
 /**
  * main - simple shell that runs commands without any argument and
@@ -23,15 +24,22 @@ int main(int ac, char **av)
 
 	if (!allocMem)
 	{
-		perror("Memory allocation failed");
-		exit(EXIT_FAILURE);
+		printerr("Memory allocation failed");
+		exit(errno);
 	}
 
 	allocMem->size = 0;
 	allocMem->allocatedSize = 0;
+	allocMem->myerrno = 0;
 	allocMem->memPtr = NULL;
 
 	dir = malloc(dirLen * sizeof(char));
+
+	if (!dir)
+	{
+		printerr("Memory allocation failed");
+		exit(errno);
+	}
 	addAddress(dir, allocMem);
 	if (ac < 2)
 	{
@@ -47,9 +55,6 @@ int main(int ac, char **av)
 		interactiveMode(av, dir, allocMem);
 	}
 
-	if (allocMem->memPtr)
-		freeMem(allocMem);
-
-	free(allocMem);
+	_myexit(allocMem->myerrno, allocMem);
 	return (0);
 }
