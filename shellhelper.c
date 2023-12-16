@@ -137,7 +137,7 @@ int shellloop(char **av, memStruct *allocMem)
 			fflush(stdout);
 			free(command);
 		}
+		free(lineptr);
 	}
-	free(lineptr);
 	return (0);
 }
