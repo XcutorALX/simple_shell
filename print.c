@@ -22,7 +22,7 @@ int _putchar(char c)
  *Return: void
  */
 
- void printstr(char *str)
+void printstr(char *str)
 {
 	size_t i;
 

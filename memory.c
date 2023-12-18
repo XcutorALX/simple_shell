@@ -21,7 +21,7 @@ int addAddress(void *ptr, memStruct *list)
 	}
 
 	if (myexists(list, ptr) == 0)
-		return 0;
+		return (0);
 
 	if (list->allocatedSize == (list->size) - 1)
 	{
@@ -117,7 +117,7 @@ int _memcpy(char *ptr, char *newPtr)
 
 	for (i = 0; ptr[i] != '\0'; i++)
 		((char *)newPtr)[i] = ((char *)ptr)[i];
-	
+
 	fflush(stdout);
 	newPtr[i] = '\0';
 	return (0);

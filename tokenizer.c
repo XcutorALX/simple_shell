@@ -15,17 +15,14 @@
 
 char *_strtok(char *str, char *delim)
 {
-	static int position;
+	static int position, count;
 	static char *strPtr;
-	static int count;
 	size_t start, i;
 
 	if (str)
 	{
 		strPtr = str;
-		position = 0;
-		count = 0;
-		for (; strPtr[count] != '\0'; count++)
+		for (count = 0, position = 0; strPtr[count] != '\0'; count++)
 		{
 			for (i = 0; delim[i] != '\0'; i++)
 			{
@@ -39,8 +36,6 @@ char *_strtok(char *str, char *delim)
 		count++;
 	}
 	start = position;
-	if (position == count)
-		return (NULL);
 	for (; position <= count; position++)
 	{
 		if (position == count)
@@ -76,44 +71,32 @@ char *_strtok(char *str, char *delim)
 char **tokenize(char *str, char *delim)
 {
 	size_t count, size;
-	char **split;
-	char *buffer;
+	char **split, *buffer;
 
 	size = 1024;
 	split = malloc(size * sizeof(char *));
 	if (!split)
-	{
-		perror("Memory reallocation error third");
 		exit(EXIT_FAILURE);
-	}
-	buffer = _strtok(str, delim);
-	split[0] = buffer;
-	if (!buffer)
-	{
+	split[0] = _strtok(str, delim);
+	if (!_strtok(str, delim))
 		return (NULL);
-	}
-	for (count = 1; (buffer = _strtok(NULL, delim)) != NULL && *buffer != '\0'; count++)
+	for (count = 1; (buffer = _strtok(NULL, delim)) != NULL
+			&& *buffer != '\0'; count++)
 	{
 		if (count == size - 1)
 		{
 			size *= 1.5;
 			split = realloc(split, size * sizeof(char *));
 			if (!split)
-			{
-				perror("Memory reallocation error second");
 				exit(EXIT_FAILURE);
-			}
 		}
 		split[count] = buffer;
 	}
-
 	split[count++] = NULL;
-	split = _realloc(split, size * sizeof(char *), (count + 1) * sizeof(char *), sizeof(char *));
+	split = _realloc(split, size * sizeof(char *),
+		(count + 1) * sizeof(char *), sizeof(char *));
 	size = count + 1;
 	if (!split)
-	{
-		perror("Memory reallocation error third");
 		exit(EXIT_FAILURE);
-	}
 	return (split);
 }

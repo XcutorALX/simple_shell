@@ -103,17 +103,16 @@ int shellloop(char **av, memStruct *allocMem)
 	char delim[] = " ";
 	char newline[] = "\n";
 	char **command, **lines;
-	int terminal, i;
+	int i;
 
-	terminal = isatty(STDIN_FILENO);
-	if (terminal != 1)
+	if (isatty(STDIN_FILENO) != 1)
 	{
-		if(getPipe(&lineptr, &bufferSize, STDIN_FILENO) != -1)
+		if (getPipe(&lineptr, &bufferSize, STDIN_FILENO) != -1)
 		{
 			lines = tokenize(lineptr, newline);
-			
 			if (isempty(lineptr) != 0)
-			{	for (i = 0; lines[i] != NULL; i++)
+			{
+				for (i = 0; lines[i] != NULL; i++)
 				{
 					command = tokenize(lines[i], delim);
 					addAddress(lineptr, allocMem);
@@ -123,7 +122,7 @@ int shellloop(char **av, memStruct *allocMem)
 				}
 			}
 			else
-			{	
+			{
 				free(lineptr);
 				free(lines);
 			}

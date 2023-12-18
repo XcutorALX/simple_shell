@@ -57,6 +57,16 @@ int getLine(char **lineptr, size_t *bufferSize, int fd)
 	return (i);
 }
 
+/**
+ * getPipe - get input from pipe
+ *
+ * @lineptr: the line poimter
+ * @bufferSize: the buffersize
+ * @fd: the file descriptor
+ *
+ * Return: an int
+ */
+
 int getPipe(char **lineptr, size_t *bufferSize, int fd)
 {
 	size_t i = 0;

@@ -26,17 +26,11 @@ char *searchFile(char *fileName, memStruct *allocMem)
 		return (NULL);
 	path_copy = _strdup(path);
 	pathTokens = tokenize(path_copy, DELIM);
-
 	if (!pathTokens)
-	{
-		perror("Unable to get paths");
 		return (NULL);
-	}
-
 	for (fileLength = 0; fileName[fileLength] != '\0'; fileLength++)
 		;
 	fullPath = (char *)malloc(1024);
-
 	for (index = 0; pathTokens[index]; index++)
 	{
 		for (i = 0; pathTokens[index][i] != '\0'; i++)
@@ -49,7 +43,6 @@ char *searchFile(char *fileName, memStruct *allocMem)
 			fullPath[i] = fileName[j];
 		}
 		fullPath[i] = '\0';
-
 		if (stat(fullPath, &st) == 0)
 		{
 			free(path_copy);
@@ -57,7 +50,6 @@ char *searchFile(char *fileName, memStruct *allocMem)
 			return (fullPath);
 		}
 	}
-	
 	free(path_copy);
 	free(pathTokens);
 	free(fullPath);

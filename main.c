@@ -21,19 +21,16 @@ int main(int ac, char **av)
 	memStruct *allocMem;
 
 	allocMem = malloc(sizeof(memStruct));
-
 	if (!allocMem)
 	{
 		printerr("Memory allocation failed");
 		exit(errno);
 	}
-
 	allocMem->size = 0;
 	allocMem->allocatedSize = 0;
 	allocMem->myerrno = 0;
 	allocMem->memPtr = NULL;
 	allocMem->name = av[0];
-
 	dir = malloc(dirLen * sizeof(char));
 
 	if (!dir)

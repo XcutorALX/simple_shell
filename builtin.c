@@ -18,11 +18,11 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 	size_t i;
 	struct stat st;
 	char *temp;
-	builtins commands[] = {
-		{"exit", &myexit},
+	builtins commands[] = {{"exit", &myexit},
 		{"env", &printEnv},
-		{NULL}
-	};
+		{"setenv", &_setenv},
+		{"unsetenv", &_unsetenv},
+		{NULL}};
 
 	for (i = 0; commands[i].cmd != NULL; i++)
 	{
@@ -38,7 +38,6 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 	else
 	{
 		temp = searchFile(argv[0], allocMem);
-		fflush(stdout);
 		if (temp != NULL)
 		{
 			argv[0] = temp;
@@ -50,8 +49,7 @@ void testBuiltin(char **argv, char *av, memStruct *allocMem)
 			printerr(av);
 			printerr(": 1: ");
 			printerr(argv[0]);
-			printerr(": not found");
-			puterr('\n');
+			printerr(": not found\n");
 			allocMem->myerrno = 127;
 			free(temp);
 		}
@@ -105,7 +103,7 @@ int myexit(char **argv, memStruct *allocMem)
  * printEnv - prints the current enviroment
  *
  * @argv: an array of arguments as strings
- *
+ *@allocMem: a struct that keeps track of allocated memory
  * Return: always 0
  */
 
@@ -114,7 +112,7 @@ int printEnv(char **argv, memStruct *allocMem)
 	size_t i;
 	int count;
 
-	for(count = 0; count < allocMem->size; count++)
+	for (count = 0; count < allocMem->size; count++)
 		;
 
 	if (!argv)
@@ -144,7 +142,7 @@ void _myexit(int exitcode, memStruct *allocMem)
 {
 	if (allocMem->memPtr)
 		freeMem(allocMem);
-	
+
 	free(allocMem);
 	exit(exitcode);
 }

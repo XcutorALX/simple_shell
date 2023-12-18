@@ -43,29 +43,31 @@ char *_getenv(const char *name, memStruct *allocMem)
  * _setenv - this function adds a variable
  * name and its value to the current envioment
  *
- * @name: the name of the variable to be added
- * @value: the value of the variable to be added
- * @overwrite: whether to overwrite the variable value if the
- * variable already exists an overwrite value of zero disables
- * overwriting and non zero enables it
+ * @argv: commandline arguments
  * @allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: returns zero on success or -1 on error,
  * with errno set to indicate the error
  */
 
-int _setenv(char *name, const char *value, int overwrite, memStruct *allocMem)
+int _setenv(char **argv, memStruct *allocMem)
 {
 	size_t envLen;
 	char *varPair, *full, *buffer, *varDup, **temp;
+	char *name, *value;
 	char join[] = "=";
 	int seen = 0;
+	int overwrite;
 
+	name = argv[1];
+	if (name)
+		value = argv[2];
+	if (value && argv[3])
+		overwrite = _atoi(argv[3]);
 	temp = malloc(1024 * sizeof(char *));
 	full = strcon(name, join);
 	varPair = strcon(full, value);
 	free(full);
-
 	for (envLen = 0; environ[envLen] != NULL; envLen++)
 	{
 		varDup = _strdup(environ[envLen]);
@@ -96,17 +98,19 @@ int _setenv(char *name, const char *value, int overwrite, memStruct *allocMem)
  * _unsetenv - this function removes a variable and its value
  * from the enviroment
  *
- *@name: the name of the variable to remove
+ *@argv: command line arguments
  *@allocMem: a struct keeping track of dynamically allocated memory
  *
  * Return: returns 0 on failure
  */
 
-int _unsetenv(char *name, memStruct *allocMem)
+int _unsetenv(char **argv, memStruct *allocMem)
 {
+	char *name;
 	size_t envLen, newEnvLen, size;
 	char **newEnv, *buffer, *env_dup;
 
+	name = argv[0];
 	size = 80;
 	newEnv = malloc(size * sizeof(char *));
 	for (envLen = 0, newEnvLen = 0; environ[envLen] != NULL; envLen++)
@@ -117,10 +121,7 @@ int _unsetenv(char *name, memStruct *allocMem)
 			, size * 1.5 * sizeof(char *), sizeof(char *));
 			size *= 1.5;
 			if (!size)
-			{
-				printstr("Memory allocation error");
 				exit(EXIT_FAILURE);
-			}
 		}
 		env_dup = _strdup(environ[envLen]);
 		buffer = _strtok(env_dup, DELIM);
